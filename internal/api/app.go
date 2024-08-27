@@ -3,6 +3,7 @@ package api
 import (
 	"accountant/internal/dependencies"
 	"accountant/internal/handlers"
+	"accountant/internal/middlewares"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/recover"
@@ -22,8 +23,9 @@ func New(container *dependencies.Container) *fiber.App {
 }
 
 func setMiddlewares(app *fiber.App) {
-	app.Use(slogfiber.New(slog.Default()))
 	app.Use(recover.New())
+	app.Use(slogfiber.New(slog.Default()))
+	app.Use(middlewares.NewJWTMiddleware(middlewares.JWTMiddlewareConfig{Skip: []string{"/login", "/register"}}))
 }
 
 func setHandlers(app *fiber.App, container *dependencies.Container) {

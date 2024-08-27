@@ -6,7 +6,6 @@ import (
 	"accountant/internal/services"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"time"
 )
 
 type Container struct {
@@ -25,8 +24,8 @@ func (c *Container) Uow() *uow.UnitOfWork {
 func (c *Container) AuthService() *services.AuthService {
 	return &services.AuthService{
 		Uow:              c.Uow(),
-		JwtDuration:      c.Config.AuthJwtDuration * time.Second,
-		JwtSigningKey:    []byte(c.Config.AuthJwtSigningKey),
+		JwtDuration:      c.Config.JwtDuration,
+		JwtSigningKey:    []byte(c.Config.JwtSigningKey),
 		JwtSigningMethod: jwt.SigningMethodHS256,
 	}
 }

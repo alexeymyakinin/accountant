@@ -24,7 +24,7 @@ func (h *authHandler) login(c fiber.Ctx) error {
 		case errors.Is(err, services.UserNotFoundError):
 			return fiber.NewError(fiber.StatusNotFound, err.Error())
 		default:
-			return fiber.NewError(fiber.StatusInternalServerError)
+			return err
 		}
 	}
 
@@ -44,7 +44,7 @@ func (h *authHandler) register(c fiber.Ctx) error {
 		case errors.Is(err, services.EmailAlreadyExistsError):
 			return fiber.NewError(fiber.StatusBadRequest, services.EmailAlreadyExistsError.Error())
 		default:
-			return fiber.NewError(fiber.StatusInternalServerError)
+			return err
 		}
 	}
 
